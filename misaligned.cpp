@@ -1,6 +1,7 @@
 #include <iostream>
 #include <assert.h>
 #include<string>
+#include <iomanip>
 
 int printColorMap() {
     const char* majorColor[] = {"White", "Red", "Black", "Yellow", "Violet"};
@@ -51,7 +52,7 @@ void TestColorMapAlignment() {
 
 int main() {
     int result = printColorMap();
-    assert(result == 25);
+    TestColorMapAlignment();
     std::cout << "All is well (maybe!)\n";
     return 0;
 }
