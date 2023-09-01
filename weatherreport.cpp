@@ -36,6 +36,43 @@ namespace WeatherSpace
             return 52;
         }
     };
+
+    class SensorStubRainy : public IWeatherSensor {
+        int Humidity() const override {
+            return 72;
+        }
+
+        int Precipitation() const override {
+            return 50;
+        }
+
+        double TemperatureInC() const override {
+            return 26;
+        }
+
+        int WindSpeedKMPH() const override {
+            return 52;
+        }
+    };
+
+    class SensorStubPrecipitation : public IWeatherSensor {
+        int Humidity() const override {
+            return 72;
+        }
+
+        int Precipitation() const override {
+            return 70;
+        }
+
+        double TemperatureInC() const override {
+            return 26;
+        }
+
+        int WindSpeedKMPH() const override {
+            return 52;
+        }
+    };
+
     string Report(const IWeatherSensor& sensor)
     {
         int precipitation = sensor.Precipitation();
@@ -46,6 +83,8 @@ namespace WeatherSpace
         {
             if (precipitation >= 20 && precipitation < 60)
                 report = "Partly Cloudy";
+            else if (precipitation >= 60)
+                report = "High precipitation";
             else if (sensor.WindSpeedKMPH() > 50)
                 report = "Alert, Stormy with heavy rain";
         }
@@ -54,7 +93,7 @@ namespace WeatherSpace
     
     void TestRainy()
     {
-        SensorStub sensor;
+        SensorStubRainy sensor;
         string report = Report(sensor);
         cout << report << endl;
         assert(report.find("rain") != string::npos);
@@ -64,12 +103,12 @@ namespace WeatherSpace
     {
         // This instance of stub needs to be different-
         // to give high precipitation (>60) and low wind-speed (<50)
-        SensorStub sensor;
+        SensorStubPrecipitation sensor;
 
         // strengthen the assert to expose the bug
         // (function returns Sunny day, it should predict rain)
         string report = Report(sensor);
-        assert(report.length() > 0);
+        assert(report.find("precipitation"));
     }
 }
 
